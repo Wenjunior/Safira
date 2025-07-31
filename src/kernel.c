@@ -5,6 +5,13 @@
 
 #define LIGHT_GREY 0x07
 
+#define COMMAND_PORT 0x3D4
+#define RECV_LOWER_BITS 14
+#define RECV_HIGHER_BITS 15
+#define DATA_PORT 0x3D5
+
+extern void outb(short port, char data);
+
 char *video_memory = (char *) 0xB8000;
 
 void clear_screen() {
@@ -13,6 +20,16 @@ void clear_screen() {
 
 		video_memory[i + 1] = LIGHT_GREY;
 	}
+}
+
+void move_cursor(int pos) {
+	outb(COMMAND_PORT, RECV_LOWER_BITS);
+
+	outb(DATA_PORT, ((pos >> 8) & 0xFF));
+
+	outb(COMMAND_PORT, RECV_HIGHER_BITS);
+
+	outb(DATA_PORT, pos & 0xFF);
 }
 
 void puts(const char *STRING) {
@@ -29,6 +46,8 @@ void puts(const char *STRING) {
 
 		j += 2;
 	}
+
+	move_cursor(i);
 }
 
 void start_kernel() {

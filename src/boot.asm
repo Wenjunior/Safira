@@ -9,6 +9,14 @@ align 4
 	dd FLAGS
 	dd CHECKSUM
 
+global outb
+
+outb:
+	mov DX, [ESP + 4]
+	mov AL, [ESP + 8]
+	out DX, AL
+	ret
+
 global main
 
 extern start_kernel

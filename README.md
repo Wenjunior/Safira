@@ -4,5 +4,6 @@ Para executar o projeto digite os comandos a seguir:
 
 ```
 git clone https://github.com/Wenjunior/Safira.git && cd Safira
-make
+cargo install bootimage
+cargo build && cargo bootimage && cargo run
 ```

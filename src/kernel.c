@@ -5,10 +5,10 @@
 
 #define LIGHT_GREY 0x07
 
-#define COMMAND_PORT 0x3D4
+#define CURSOR_COMMAND_PORT 0x3D4
 #define RECV_LOWER_BITS 14
 #define RECV_HIGHER_BITS 15
-#define DATA_PORT 0x3D5
+#define CURSOR_DATA_PORT 0x3D5
 
 extern void outb(short port, char data);
 
@@ -23,13 +23,13 @@ void clear_screen() {
 }
 
 void move_cursor(int pos) {
-	outb(COMMAND_PORT, RECV_LOWER_BITS);
+	outb(CURSOR_COMMAND_PORT, RECV_LOWER_BITS);
 
-	outb(DATA_PORT, ((pos >> 8) & 0xFF));
+	outb(CURSOR_DATA_PORT, ((pos >> 8) & 0xFF));
 
-	outb(COMMAND_PORT, RECV_HIGHER_BITS);
+	outb(CURSOR_COMMAND_PORT, RECV_HIGHER_BITS);
 
-	outb(DATA_PORT, pos & 0xFF);
+	outb(CURSOR_DATA_PORT, pos & 0xFF);
 }
 
 void puts(const char *STRING) {

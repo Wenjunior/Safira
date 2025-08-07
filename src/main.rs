@@ -6,7 +6,7 @@ use core::panic::PanicInfo;
 
 static mut VGA_BUFFER: *mut u8 = 0xB8000 as *mut u8;
 
-fn outb(port: u16, data: u8) {
+fn write(port: u16, data: u8) {
 	unsafe {
 		asm!(
 			"out dx, al",
@@ -16,14 +16,14 @@ fn outb(port: u16, data: u8) {
 	}
 }
 
-fn move_cursor(pos: usize) {
-	outb(0x3D4, 0xE);
+fn move_caret(pos: usize) {
+	write(0x3D4, 0xE);
 
-	outb(0x3D5, (pos >> 8) as u8);
+	write(0x3D5, (pos >> 8) as u8);
 
-	outb(0x3D4, 0xF);
+	write(0x3D4, 0xF);
 
-	outb(0x3D5, (pos & 0xFF) as u8);
+	write(0x3D5, (pos & 0xFF) as u8);
 }
 
 fn print(string: &[u8]) {
@@ -34,7 +34,7 @@ fn print(string: &[u8]) {
 			*VGA_BUFFER.offset(i as isize * 2 + 1) = 0x7;
 		}
 
-		move_cursor(i);
+		move_caret(i);
 	}
 }
 
